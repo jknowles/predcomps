@@ -86,6 +86,15 @@ GetComparisonDFFromPairs.lm <- function(lmFit, pairs, u, v) {
 }
 
 #' @export
+GetComparisonDFFromPairs.train <- function(trainFit, pairs, u, v) {
+  predictionFunction <- function(df) predict.train(trainFit, newdata = df, type = "prob")
+  return(
+    GetComparisonDFFromPairs.function(predictionFunction, pairs, u, v)
+  ) 
+}
+
+
+#' @export
 GetComparisonDFFromPairs.randomForest <- function(rfFit, pairs, u, v) {
   # For classification, we need to specify that the predictions should be probabilties (not classes)
   if (rfFit$type == "classification") { 

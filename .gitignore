@@ -4,3 +4,5 @@ main.R
 *figure/
 ..Rcheck
 *.RData
+.Rproj.user
+*.Rproj
