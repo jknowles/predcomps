@@ -87,7 +87,14 @@ GetComparisonDFFromPairs.lm <- function(lmFit, pairs, u, v) {
 
 #' @export
 GetComparisonDFFromPairs.train <- function(trainFit, pairs, u, v) {
-  predictionFunction <- function(df) predict.train(trainFit, newdata = df, type = "prob")
+  if (trainFit$modelType == "Classification") { 
+    if(length(levels(trainFit$trainingData$.outcome)) >2) {
+      stop("Sorry, I don't know what to do when there are more than 2 classes.")
+    }
+    predictionFunction <- function(df) predict.train(trainFit, newdata = df, type = "prob")[,2]
+    } else{
+      predictionFunction <- function(df) predict.train(trainFit, newdata = df)
+    }
   return(
     GetComparisonDFFromPairs.function(predictionFunction, pairs, u, v)
   ) 
